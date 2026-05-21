@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Jogo Educativo - Homem-Aranha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://i.imgur.com/3Z4GZ3V.jpg') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            margin-top: 20px;
+            font-size: 3em;
+            text-shadow: 2px 2px black;
+        }
+
+        #game-container {
+            margin-top: 50px;
+        }
+
+        .letter-btn {
+            font-size: 2em;
+            margin: 10px;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .letter-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #word-display {
+            font-size: 2.5em;
+            margin-top: 20px;
+            padding: 10px;
+            min-height: 50px;
+        }
+
+        #message {
+            font-size: 2em;
+            margin-top: 20px;
+            height: 50px;
+        }
+
+        .spiderman-theme {
+            background-color: rgba(0,0,0,0.6);
+            padding: 20px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Homem-Aranha Educativo</h1>
+    <div id="game-container" class="spiderman-theme">
+        <div id="letters-container"></div>
+        <div id="word-display"></div>
+        <div id="message"></div>
+        <button onclick="checkWord()" style="margin-top: 20px; font-size: 1.5em; padding: 10px 20px;">Verificar Palavra</button>
+    </div>
+
+    <script>
+        const vowels = ['A', 'E', 'I', 'O', 'U'];
+        const consonants = ['B','C','D','F','G','H','J','K','L','M','N','P','Q','R','S','T','V','W','X','Y','Z'];
+        const lettersContainer = document.getElementById('letters-container');
+        const wordDisplay = document.getElementById('word-display');
+        const message = document.getElementById('message');
+
+        let currentWord = '';
+
+        function createLetterButtons() {
+            // Limpa container
+            lettersContainer.innerHTML = '';
+
+            // Adiciona consoantes
+            consonants.forEach(letter => {
+                const btn = document.createElement('button');
+                btn.textContent = letter;
+                btn.classList.add('letter-btn');
+                btn.style.backgroundColor = 'red';
+                btn.onclick = () => addLetter(letter);
+                lettersContainer.appendChild(btn);
+            });
+
+            // Adiciona vogais
+            vowels.forEach(letter => {
+                const btn = document.createElement('button');
+                btn.textContent = letter;
+                btn.classList.add('letter-btn');
+                btn.style.backgroundColor = 'blue';
+                btn.onclick = () => addLetter(letter);
+                lettersContainer.appendChild(btn);
+            });
+        }
+
+        function addLetter(letter) {
+            currentWord += letter;
+            wordDisplay.textContent = currentWord;
+            message.textContent = '';
+        }
+
+        function checkWord() {
+            // Para fins educativos, vamos validar se a palavra começa com uma consoante seguida de uma vogal
+            if (currentWord.length >= 2) {
+                const firstLetter = currentWord[0].toUpperCase();
+                const secondLetter = currentWord[1].toUpperCase();
+                if (consonants.includes(firstLetter) && vowels.includes(secondLetter)) {
+                    message.textContent = '✔ Correto!';
+                    message.style.color = 'limegreen';
+                } else {
+                    message.textContent = '✖ Tente novamente!';
+                    message.style.color = 'red';
+                }
+            } else {
+                message.textContent = '✖ Palavra muito curta!';
+                message.style.color = 'red';
+            }
+            // Reinicia a palavra para nova tentativa
+            currentWord = '';
+            wordDisplay.textContent = '';
+        }
+
+        // Inicializa o jogo
+        createLetterButtons();
+    </script>
+</body>
+</html>
